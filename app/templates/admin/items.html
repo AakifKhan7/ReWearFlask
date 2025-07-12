@@ -3,14 +3,25 @@
 <h2>Admin - Moderate Items</h2>
 <table class="table">
   <thead>
-    <tr><th>Title</th><th>Status</th><th>Action</th></tr>
+    <tr><th>#</th><th>Title</th><th>Uploader</th><th>Status</th><th>Actions</th></tr>
   </thead>
   <tbody>
   {% for item in items %}
     <tr>
+      <td>{{ loop.index }}</td>
       <td>{{ item.c_title }}</td>
-      <td>{{ 'Active' if not item.isDeleted else 'Removed' }}</td>
-      <td><a href="{{ url_for('admin.toggle_item', cid=item.cid) }}" class="btn btn-sm btn-warning">Toggle</a></td>
+      <td>{{ item.uploader.name }}</td>
+      <td>
+        {% if item.isDeleted %}<span class="badge bg-danger">Removed{% elif not item.isApproved %}<span class="badge bg-warning text-dark">Pending{% else %}<span class="badge bg-success">Active{% endif %}</span>
+      </td>
+      <td>
+        {% if not item.isApproved and not item.isDeleted %}
+          <a href="{{ url_for('admin.approve_item', cid=item.cid) }}" class="btn btn-sm btn-success">Approve</a>
+        {% endif %}
+        {% if not item.isDeleted %}
+          <a href="{{ url_for('admin.remove_item', cid=item.cid) }}" class="btn btn-sm btn-danger">Remove</a>
+        {% endif %}
+      </td>
     </tr>
   {% endfor %}
   </tbody>

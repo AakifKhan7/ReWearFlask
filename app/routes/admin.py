@@ -11,16 +11,27 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 @login_required
 @admin_required
 def moderate_items():
-    items = Cloth.query.filter_by(isDeleted=False).all()
+    items = Cloth.query.order_by(Cloth.createdAt.desc()).all()
     return render_template('admin/items.html', items=items)
 
 
-@admin_bp.route('/items/<int:cid>/toggle-approval')
+@admin_bp.route('/items/<int:cid>/approve')
 @login_required
 @admin_required
-def toggle_item(cid):
+def approve_item(cid):
     item = Cloth.query.get_or_404(cid)
-    item.isDeleted = not item.isDeleted  # simple toggle to simulate approve/reject
+    item.isApproved = True
     db.session.commit()
-    flash('Item status updated.', 'success')
+    flash('Item approved.', 'success')
+    return redirect(url_for('admin.moderate_items'))
+
+
+@admin_bp.route('/items/<int:cid>/remove')
+@login_required
+@admin_required
+def remove_item(cid):
+    item = Cloth.query.get_or_404(cid)
+    item.isDeleted = True
+    db.session.commit()
+    flash('Item removed.', 'warning')
     return redirect(url_for('admin.moderate_items'))

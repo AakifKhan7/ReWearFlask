@@ -13,7 +13,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @items_bp.route('/')
 def list_items():
-    items = Cloth.query.filter_by(isDeleted=False).all()
+    items = Cloth.query.filter_by(isDeleted=False, isApproved=True).all()
     return render_template('items/items_list.html', items=items)
 
 
