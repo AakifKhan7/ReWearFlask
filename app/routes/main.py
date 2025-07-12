@@ -12,4 +12,17 @@ def index():
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    from ..models import SwapRequest
+    ongoing_swaps = SwapRequest.query.filter(
+        ((SwapRequest.senderUid == current_user.uid) | (SwapRequest.recieverUid == current_user.uid)) & (SwapRequest.status == None)  # noqa: E711
+    ).all()
+    completed_swaps = SwapRequest.query.filter(
+        ((SwapRequest.senderUid == current_user.uid) | (SwapRequest.recieverUid == current_user.uid)) & (SwapRequest.status == True)
+    ).all()
+
+    return render_template(
+        'dashboard.html',
+        user=current_user,
+        ongoing_swaps=ongoing_swaps,
+        completed_swaps=completed_swaps,
+    )

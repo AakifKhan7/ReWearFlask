@@ -1,14 +1,89 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Dashboard</h2>
-<p>Welcome, {{ user.name }}! Points Balance: 0 (placeholder)</p>
-<h3>Your Items</h3>
-<ul>
-  {% for cloth in user.cloths %}
-    <li><a href="{{ url_for('items.item_detail', cid=cloth.cid) }}">{{ cloth.c_title }}</a></li>
+<div class="container">
+  <!-- Profile summary -->
+  <div class="row mb-5 align-items-center">
+    <div class="col-auto">
+      <img src="{{ user.profileImg or url_for('static', filename='uploads/vite.svg') }}" class="rounded-circle" width="96" height="96" alt="profile">
+    </div>
+    <div class="col">
+      <h2 class="mb-1">{{ user.name }}</h2>
+      <p class="text-muted mb-0">Member since {{ user.createdAt.strftime('%b %Y') if user.createdAt else '?' }}</p>
+    </div>
+    <div class="col-auto text-center">
+      <span class="badge bg-success fs-5"><i class="bi bi-coin"></i> {{ user.coins }} Coins</span>
+    </div>
+  </div>
+
+  <!-- Uploaded items -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Your Items</h4>
+    <a href="{{ url_for('items.add_item') }}" class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Add Item</a>
+  </div>
+  {% if user.cloths %}
+  <div class="row">
+    {% for item in user.cloths %}
+    <div class="col-md-4 col-lg-3 mb-4">
+      <div class="card h-100 border-0 shadow-sm item-card">
+        {% if item.images %}
+        <img src="{{ url_for('items.uploaded_file', filename=item.images[0].url.split('/')[-1]) }}" class="card-img-top" alt="...">
+        {% endif %}
+        <div class="card-body p-3">
+          <h6 class="card-title mb-2 text-truncate">{{ item.c_title }}</h6>
+          <p class="card-text small text-truncate-2">{{ item.c_description }}</p>
+          <a href="{{ url_for('items.item_detail', cid=item.cid) }}" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <p>No items listed yet.</p>
-  {% endfor %}
-</ul>
-<a class="btn btn-outline-primary" href="{{ url_for('items.add_item') }}">Add New Item</a>
+  <div class="alert alert-info">You haven't uploaded any items yet.</div>
+  {% endif %}
+
+  <!-- Ongoing Swaps -->
+  <h4 class="mt-5">Ongoing Swaps</h4>
+  {% if ongoing_swaps %}
+  <div class="table-responsive">
+    <table class="table table-sm align-middle">
+      <thead><tr><th>#</th><th>Item Offered</th><th>Item Requested</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for s in ongoing_swaps %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ s.senderCid }}</td>
+          <td>{{ s.recieverCid }}</td>
+          <td><span class="badge bg-warning text-dark">Pending</span></td>
+          <td>{{ s.createdAt.strftime('%d %b %Y') if s.createdAt else '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted">No ongoing swaps.</p>
+  {% endif %}
+
+  <!-- Completed Swaps -->
+  <h4 class="mt-4">Completed Swaps</h4>
+  {% if completed_swaps %}
+  <div class="table-responsive">
+    <table class="table table-sm align-middle table-success table-striped">
+      <thead><tr><th>#</th><th>Item Sent</th><th>Item Received</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for s in completed_swaps %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ s.senderCid }}</td>
+          <td>{{ s.recieverCid }}</td>
+          <td>{{ s.updatedAt.strftime('%d %b %Y') if s.updatedAt else '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted">No completed swaps yet.</p>
+  {% endif %}
+</div>
 {% endblock %}

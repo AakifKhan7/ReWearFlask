@@ -42,6 +42,15 @@ class User(db.Model, UserMixin, TimeStampedModelMixin):
     def get_id(self):
         return str(self.uid)
 
+    @property
+    def coins(self):
+        """Simple coins logic: +10 for each active item not yet swapped, +20 for each completed swap."""
+        active_items = [c for c in self.cloths if not c.hasSwapped]
+        completed_swaps = SwapRequest.query.filter(
+            ((SwapRequest.senderUid == self.uid) | (SwapRequest.recieverUid == self.uid)) & (SwapRequest.status == True)
+        ).count()
+        return len(active_items) * 10 + completed_swaps * 20
+
 
 class Auth(db.Model, TimeStampedModelMixin):
     __tablename__ = 'auth'
