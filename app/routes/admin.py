@@ -15,17 +15,6 @@ def moderate_items():
     return render_template('admin/items.html', items=items)
 
 
-@admin_bp.route('/items/<int:cid>/approve')
-@login_required
-@admin_required
-def approve_item(cid):
-    item = Cloth.query.get_or_404(cid)
-    item.isApproved = True
-    db.session.commit()
-    flash('Item approved.', 'success')
-    return redirect(url_for('admin.moderate_items'))
-
-
 @admin_bp.route('/items/<int:cid>/remove')
 @login_required
 @admin_required

@@ -93,7 +93,6 @@ class Cloth(db.Model, TimeStampedModelMixin):
     c_title = db.Column(db.String(120), nullable=False)
     c_description = db.Column(db.Text)
     condition = db.Column(db.String(120))
-    isApproved = db.Column(db.Boolean, default=False)
     hasSwapped = db.Column(db.Boolean, default=False)
     genderSuited = db.Column(db.String(10), default='both')
     size = db.Column(db.String(10), default='M')
