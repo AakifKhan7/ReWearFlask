@@ -38,6 +38,10 @@ class User(db.Model, UserMixin, TimeStampedModelMixin):
     def __repr__(self):
         return f'<User {self.name}>'
 
+    # Flask-Login requirement: return a unicode that uniquely identifies this user
+    def get_id(self):
+        return str(self.uid)
+
 
 class Auth(db.Model, TimeStampedModelMixin):
     __tablename__ = 'auth'
