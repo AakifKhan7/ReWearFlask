@@ -1,2 +1,23 @@
-body { padding-top: 56px; }
-.navbar-brand { font-weight: bold; }
+body{padding-top:72px;}
+.navbar-brand{font-weight:bold;}
+
+/* Hero section */
+.hero{
+  background-image:url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80');
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  padding:140px 0;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+}
+.hero .container{position:relative;z-index:2;}
+
+/* Item card hover */
+.item-card{transition:transform .2s ease,box-shadow .2s ease;}
+.item-card:hover{transform:translateY(-4px);box-shadow:0 .5rem 1rem rgba(0,0,0,.15);}
+.card-img-top{height:220px;object-fit:cover;}
