@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>All Items</h2>
+<div class="row">
+  {% for item in items %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+      {% if item.images %}
+      <img src="{{ url_for('items.uploaded_file', filename=item.images[0].url.split('/')[-1]) }}" class="card-img-top" alt="...">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ item.c_title }}</h5>
+        <p class="card-text">{{ item.c_description[:100] }}...</p>
+        <a href="{{ url_for('items.item_detail', cid=item.cid) }}" class="btn btn-sm btn-primary">View</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p>No items found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

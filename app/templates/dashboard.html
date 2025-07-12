@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ user.name }}! Points Balance: 0 (placeholder)</p>
+<h3>Your Items</h3>
+<ul>
+  {% for cloth in user.cloths %}
+    <li><a href="{{ url_for('items.item_detail', cid=cloth.cid) }}">{{ cloth.c_title }}</a></li>
+  {% else %}
+    <p>No items listed yet.</p>
+  {% endfor %}
+</ul>
+<a class="btn btn-outline-primary" href="{{ url_for('items.add_item') }}">Add New Item</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="display-4">Welcome to ReWear</h1>
+  <p class="lead">Swap or redeem unused clothing and promote sustainable fashion.</p>
+  <a class="btn btn-primary btn-lg" href="{{ url_for('items.list_items') }}">Browse Items</a>
+  {% if current_user.is_authenticated %}
+    <a class="btn btn-success btn-lg" href="{{ url_for('items.add_item') }}">List an Item</a>
+  {% else %}
+    <a class="btn btn-success btn-lg" href="{{ url_for('auth.register') }}">Start Swapping</a>
+  {% endif %}
+</div>
+{% endblock %}
