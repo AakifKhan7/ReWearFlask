@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ 'Edit Item' if edit else 'Add Item' }}</h2>
+<form method="post" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">{{ form.c_title.label(class="form-label") }}{{ form.c_title(class="form-control") }}</div>
+  <div class="mb-3">{{ form.c_description.label(class="form-label") }}{{ form.c_description(class="form-control") }}</div>
+  <div class="mb-3">{{ form.condition.label(class="form-label") }}{{ form.condition(class="form-control") }}</div>
+  <div class="mb-3">{{ form.genderSuited.label(class="form-label") }}{{ form.genderSuited(class="form-select") }}</div>
+  <div class="mb-3">{{ form.size.label(class="form-label") }}{{ form.size(class="form-select") }}</div>
+  <div class="mb-3">{{ form.style.label(class="form-label") }}{{ form.style(class="form-control") }}</div>
+  <div class="mb-3">{{ form.type.label(class="form-label") }}{{ form.type(class="form-control") }}</div>
+  <div class="mb-3">{{ form.image.label(class="form-label") }}{{ form.image(class="form-control") }}</div>
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

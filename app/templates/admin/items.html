@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Admin - Moderate Items</h2>
+<table class="table">
+  <thead>
+    <tr><th>Title</th><th>Status</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+  {% for item in items %}
+    <tr>
+      <td>{{ item.c_title }}</td>
+      <td>{{ 'Active' if not item.isDeleted else 'Removed' }}</td>
+      <td><a href="{{ url_for('admin.toggle_item', cid=item.cid) }}" class="btn btn-sm btn-warning">Toggle</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
